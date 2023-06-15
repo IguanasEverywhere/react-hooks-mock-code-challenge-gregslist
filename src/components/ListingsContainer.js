@@ -1,9 +1,24 @@
 import React from "react";
 import ListingCard from "./ListingCard";
 
-function ListingsContainer({ listingsToDisplay, removeItemFromListing }) {
+function ListingsContainer({ listingsToDisplay, removeItemFromListing, isSorted }) {
 
-  const listingsAsCards = listingsToDisplay.map((listing) =>
+  function sortByLocation(a, b) {
+    if (a.location.toLowerCase() > b.location.toLowerCase()) {
+      return 1;
+    }
+    if (a.location.toLowerCase() < b.location.toLowerCase()) {
+      return -1;
+    }
+    return 0;
+  }
+
+  const sortedListings = [...listingsToDisplay];
+  sortedListings.sort(sortByLocation);
+
+  let dataToDisplay = isSorted ? sortedListings : listingsToDisplay;
+
+  const listingsAsCards = dataToDisplay.map((listing) =>
     <ListingCard
       key={listing.id}
       id={listing.id}

@@ -6,6 +6,7 @@ function App() {
 
   const [allListings, setAllListings] = useState([]);
   const [listingsToDisplay, setListingsToDisplay] = useState([]);
+  const [isSorted, setIsSorted] = useState(false);
 
   function removeItemFromListing(id) {
     const listingsAfterDelete = listingsToDisplay.filter((listing) => listing.id !== id);
@@ -16,6 +17,10 @@ function App() {
   function filterSearchResults(searchQuery) {
     const searchResults = allListings.filter(listing => listing.description.includes(searchQuery));
     setListingsToDisplay(searchResults);
+  }
+
+  function sortListings() {
+    setIsSorted(!isSorted);
   }
 
   useEffect(() => {
@@ -30,10 +35,15 @@ function App() {
 
   return (
     <div className="app">
-      <Header filterSearchResults={filterSearchResults} />
+      <Header
+        filterSearchResults={filterSearchResults}
+        sortListings={sortListings}
+        isSorted={isSorted}
+      />
       <ListingsContainer
         listingsToDisplay={listingsToDisplay}
         removeItemFromListing={removeItemFromListing}
+        isSorted={isSorted}
       />
     </div>
   );
