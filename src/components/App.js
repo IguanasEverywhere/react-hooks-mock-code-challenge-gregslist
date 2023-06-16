@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import ListingsContainer from "./ListingsContainer";
+import Form from './Form';
 
 function App() {
 
@@ -21,6 +22,22 @@ function App() {
 
   function sortListings() {
     setIsSorted(!isSorted);
+  }
+
+  function addItem(newItem) {
+    fetch('http://localhost:6001/listings/', {
+      method: 'POST',
+      headers: {
+        'Content-Type' : 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(newItem)
+    })
+    .then(r => r.json())
+    .then(newPost => {
+      setAllListings([...allListings, newPost])
+      setListingsToDisplay([...listingsToDisplay, newPost])
+    })
   }
 
   useEffect(() => {
@@ -45,6 +62,7 @@ function App() {
         removeItemFromListing={removeItemFromListing}
         isSorted={isSorted}
       />
+      <Form addItem={addItem}/>
     </div>
   );
 }
